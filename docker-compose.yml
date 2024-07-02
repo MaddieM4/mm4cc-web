@@ -1,0 +1,14 @@
+name: mm4cc-web-${SITE_MODE:-dev}
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./templates:/app/templates
+      - ./pages:/app/pages
+      - ./static:/app/static
+    environment:
+      - ROCKET_ADDRESS=0.0.0.0
+      - ROCKET_PORT=80
+    ports:
+      - ${PORT:-8082}:80

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Resume</title>
+  <style>
+    h1, p:first-of-type {
+      text-align: center;
+    }
+
+    aside {
+      float: left;
+      padding: 2em;
+    }
+
+    /* Extremely lazy commentability */
+    pre { display: none; }
+  </style>
+</head>
+
+<body>
+  {{{ content }}}
+
+  <script>
+    // This is kind of a dumb way to fix the HTML structure.
+    // I know.
+    // But it sure does make it easy to mobile-edit my resume :D
+
+    let skills_h3 = document.getElementsByTagName("h3")[0];
+    let skills_ul = document.getElementsByTagName("ul")[0];
+    let aside = document.createElement("aside");
+
+    skills_h3.parentElement.insertBefore(aside, skills_h3);
+    aside.appendChild(skills_h3);
+    aside.appendChild(skills_ul);
+  </script>
+</body>
+</html>

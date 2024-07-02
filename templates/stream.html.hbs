@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+  <title>{{ meta.title }} - maddieM4.cc</title>
+
+  <style>
+    @font-face {
+      font-family: 'ArchitectsDaughter';
+      font-display: swap;
+      src: url('/static/fonts/architects-daughter/ArchitectsDaughter-Regular.ttf') format('truetype');
+    }
+
+    html { height: 100%; }
+    body {
+      margin: 0px;
+      background-color: #fbfac8; /* Article color fallback */
+      min-height: 100%;
+    }
+    #background {
+      background-image: linear-gradient(to bottom right, #3D2A51, #DB3DB1);
+      position: fixed;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      z-index: -30;
+      perspective: 1000px;
+    }
+
+    nav {
+      color: #845652;
+      background: #3C2F39;
+      font-family: 'ArchitectsDaughter', Fallback, serif;
+      padding: 0.3em 1em;
+      font-size: 2em;
+
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    nav a { text-decoration: none }
+    nav .right-buttons a {
+      font-size: 0.6em;
+      vertical-align: middle;
+    }
+    nav .right-buttons a::before {
+      content: " - ";
+    }
+    nav a:link { color: #845652; }
+    nav a:visited { color: #845652; }
+    nav a:hover { color: #3FD982; }
+    nav a:active { color: #D94B3F; }
+
+    article {
+      max-width: 650px;
+      margin: auto;
+      min-height: 100%;
+      background-color: #fbfac8;
+      padding: 2em;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'ArchitectsDaughter', Fallback, serif;
+    }
+    h2.title {
+      margin-bottom: 0em;
+    }
+    h6.meta {
+      margin: 0em;
+      color: #3C2F39;
+    }
+    a:link { color: #217EC2; }
+    a:visited { color: #DB3DB1; }
+    a:hover { color: #3FD982; }
+    a:active { color: #D94B3F; }
+
+    .run-glu {
+      margin-top: 5px;
+    }
+    .run-glu a:first-child {
+      color: white;
+      background-image: linear-gradient(#333, #000);
+      border-radius: 5px 0px 0px 5px;
+      border-left: none;
+    }
+    .run-glu a {
+      color: black;
+      font-family: Monospace;
+      background-image: linear-gradient(#2d2, #1b6400);
+      padding: 5px;
+      text-decoration: none;
+      border-left: 1px solid #2d2;
+      border-right: 1px solid #1b6400;
+    }
+    .run-glu a:last-child {
+      border-radius: 0px 5px 5px 0px;
+      border-right: none;
+    }
+
+    .run-glu-popover {
+      border: 1px solid black;
+      border-radius: 16px;
+
+      display: none;
+      z-index: 30;
+      position: absolute;
+      margin-top: 0.3em;
+      padding: 0.6em 1em 0em 1em;
+    }
+    .run-glu-popover .result {
+      display: none;
+    }
+    .run-glu-popover.success, .run-glu-popover.success .success {
+      display: inline;
+      background-color: #caffd8;
+    }
+    .run-glu-popover.failure, .run-glu-popover.failure .failure {
+      display: inline;
+      background-color: #ffcaca;
+    }
+    .run-glu-popover .close {
+      border: 2px solid red;
+      border-radius: 15px;
+      text-decoration: none;
+      color: red;
+      background: #861919;
+    }
+
+    @media (max-width: 650px) {
+      #background {
+        display: none;
+      }
+    }
+
+    .star {
+      background-color: white;
+      width: 2px;
+      height: 2px;
+      border-radius: 1px;
+      position: absolute;
+      transform: translate3d(var(--x), var(--y), var(--z));
+      animation: 8s var(--delay) twinkle ease-out running infinite;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0; }
+      1% { opacity: 0; }
+      2% { opacity: 0.4; }
+      50% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    #nav-container {
+      width: 310px;
+      margin: auto;
+    }
+  </style>
+
+  <!-- Charlotteworld Webring -->
+  <link href="https://cdn.jsdelivr.net/gh/aceynk/charlotteworld@main/src/style.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/gh/aceynk/charlotteworld@main/src/main.js"></script>
+
+</head>
+<body>
+  <nav>
+    <a href="/">maddieM4.cc</a>
+    <div class="right-buttons">
+      <a href="https://ntfy.maddiem4.cc/">ntfy</a>
+      <a href="https://linktr.ee/maddieM4">linktree</a>
+    </div>
+  </nav>
+  <article>
+    <h2 class="title">{{ meta.title }}</h2>
+    <h6 class="meta">{{ meta.visibility }} - Will show date when possible</h6>
+
+    {{ #if meta.glu_commands }}
+      <div class="run-glu"><a href="https://github.com/MaddieM4/glu">Run this in GLU!</a>{{#each meta.glu_commands}}<a href="#" onclick="run_glu(event)">{{this}}</a>{{/each}}</div>
+      <div class="run-glu-popover">
+        <a href="#" onclick="close_glu_popover(event)" class="close">&nbsp;x&nbsp;</a>
+        <span class="result success">Copied!</span>
+        <span class="result failure">Failed to copy:</span>
+        <pre>glu some_url 'bash run.sh'</pre>
+      </div>
+    {{ /if }}
+
+    <div id="twitch-embed"></div>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <script>
+      new Twitch.Embed("twitch-embed", {
+        channel: "maddiem4codes",
+        autoplay: true,
+        muted: true,
+        width: "100%",
+        height: 700,
+      });
+    </script>
+
+    <div id="md-text">
+    {{{ html }}}
+    </div>
+
+    <script>
+      const socket = new WebSocket("/stream");
+      socket.addEventListener("message", (event) => {
+        document.getElementById('md-text').innerHTML = event.data;
+      });
+      setInterval(() => {
+        socket.send(null);
+      }, 5000);
+    </script>
+
+    <hr/>
+    <div id="nav-container"><a id="prev-link"><img id="prev-arrow" src="https://cdn.jsdelivr.net/gh/aceynk/charlotteworld@main/assets/leftarrow.png" alt="prev"></a><div id="ch-main">CHARLOTTEWORLD Webring!</div><a id="next-link"><img id="next-arrow" src="https://cdn.jsdelivr.net/gh/aceynk/charlotteworld@main/assets/rightarrow.png" alt="next"></a></div>
+  </article>
+  <div id="background"></div>
+</body>
+
+<script>
+function run_glu(event) {
+  let url = new URL(window.location.href);
+  let md_url = `${url.protocol}//${url.host}${url.pathname}`;
+  let cmd = event.target.innerText;
+  let text_to_copy = `glu ${md_url} '${cmd}'`;
+
+  navigator.clipboard.writeText(text_to_copy).then(
+    function() { open_glu_popover("success", text_to_copy) },
+    function() { open_glu_popover("failure", text_to_copy) }
+  );
+}
+
+function open_glu_popover(result_class, glu_text) {
+  let popover = document.getElementsByClassName("run-glu-popover")[0];
+  popover.classList.add(result_class);
+  document.querySelector('.run-glu-popover pre').innerText = glu_text;
+}
+
+function close_glu_popover(event) {
+  event.preventDefault();
+  let popover = document.getElementsByClassName("run-glu-popover")[0];
+  popover.classList.remove("success");
+  popover.classList.remove("failure");
+}
+</script>
+
+<script>
+const NUM_STARS = 1_000;
+const STARS_PARENT = document.querySelector('#background');
+
+const getScrollPercent = () => {
+  const de = document.documentElement;
+  const b = document.body;
+
+  const y = de.scrollTop || b.scrollTop;
+  const total = (de.scrollHeight || b.scrollHeight) - de.clientHeight;
+  return y/total;
+}
+const fixScroll = (event) => {
+  const sp = getScrollPercent();
+  STARS_PARENT.style["perspective-origin"] = `50% ${sp*100}%`;
+};
+
+fixScroll(undefined); // Init
+document.addEventListener("scroll", fixScroll, { passive: true });
+
+const createStar = () => {
+  const star = document.createElement('div'),
+        delay = Math.random() * 8,
+        x = Math.random() * document.documentElement.clientWidth,
+        y = Math.random() * document.documentElement.clientHeight,
+        z = Math.random() * 200;
+  star.className = 'star';
+  star.style = `--x: ${x}px; --y: ${y}px; --z: ${z}px; --delay: -${delay}s`;
+  return star;
+}
+
+for (let i=0; i<NUM_STARS; i++)
+  STARS_PARENT.appendChild(createStar());
+</script>
+
+</html>

@@ -1,4 +1,4 @@
-FROM rust:1.76-bookworm AS builder
+FROM rust:1.91-trixie AS builder
 
 WORKDIR /app/
 COPY Cargo.toml .
@@ -16,7 +16,7 @@ COPY src ./src
 RUN touch src/main.rs
 RUN cargo build --release # /app/target/release/mm4cc-web
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 RUN apt-get update \
   && apt-get upgrade -y \
   && rm -rf /var/lib/apt/lists/*

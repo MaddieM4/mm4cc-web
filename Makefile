@@ -22,3 +22,12 @@ dev.env:
 prod.env:
 	echo "TUNNEL_TOKEN=fixme" > prod.env
 	echo "NO_AUTOUPDATE=1" >> prod.env
+
+site:
+	uv run main.py
+
+deploy: site
+	rsync -a site morgana:~/projects/mm4cc-web/
+
+clean:
+	rm -r site

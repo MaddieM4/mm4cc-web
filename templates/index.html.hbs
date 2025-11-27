@@ -177,7 +177,7 @@
     <h2 class="title">{{ meta.title }}</h2>
     <h6 class="meta">{{ meta.visibility }} - Will show date when possible</h6>
 
-    {{ #if meta.glu_commands }}
+    {{#if meta.glu_commands}}
       <div class="run-glu"><a href="https://github.com/MaddieM4/glu">Run this in GLU!</a>{{#each meta.glu_commands}}<a href="#" onclick="run_glu(event)">{{this}}</a>{{/each}}</div>
       <div class="run-glu-popover">
         <a href="#" onclick="close_glu_popover(event)" class="close">&nbsp;x&nbsp;</a>
@@ -185,7 +185,7 @@
         <span class="result failure">Failed to copy:</span>
         <pre>glu some_url 'bash run.sh'</pre>
       </div>
-    {{ /if }}
+    {{/if}}
 
     {{{ html }}}
 

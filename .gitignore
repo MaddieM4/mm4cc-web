@@ -1,6 +1,9 @@
 # The location of the Obsidian vault, which will vary by installation
 pages
 
+# Generated site
+/site/
+
 # Vim artifacts
 *.sw[op]
 

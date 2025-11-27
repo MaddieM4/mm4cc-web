@@ -1,0 +1,11 @@
+[project]
+name = "mm4cc-web"
+version = "0.1.0"
+description = "Maddie's Public Website"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "markdown>=3.10",
+    "python-frontmatter>=1.1.0",
+    "python-handlebars>=0.0.3",
+]

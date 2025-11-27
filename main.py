@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 from shutil import rmtree, copy, copytree
+import os
 
 import markdown
 import frontmatter
@@ -25,11 +26,12 @@ def generate_static():
 
 def generate_page(path):
     pread = SRC / path
-    pwrite = DST / path.lower().replace('.md', '.html')
+    pwmd = DST / str(path).lower()
+    pwrite = DST / (str(path).lower().replace('.md', '.html'))
 
     with open(pread, "r", encoding="utf-8") as f:
         page = frontmatter.loads(f.read())
-    if page['visibility'] != "public":
+    if page.get('visibility', default=None) != "public":
         return
 
     html = tmpl_index({
@@ -38,18 +40,26 @@ def generate_page(path):
             'visibility': page['visibility'],
             'glu_commands': page.get('glu', default=None),
         },
-        'html': markdown.markdown(page.content),
+        'html': markdown.markdown(page.content, extensions=['fenced_code']),
     })
 
     pwrite.parent.mkdir(parents=True, exist_ok=True)
     with open(pwrite, "w", encoding="utf-8") as f:
         f.write(html)
+    with open(pwmd, "w", encoding="utf-8") as f:
+        f.write(page.content)
+
+def generate_pages():
+    for root, dirs, files in os.walk(SRC):
+        for file in files:
+            if file.endswith('.md'):
+                generate_page((Path(root) / file).relative_to(SRC))
 
 def generate_all():
     if DST.exists():
         rmtree(DST)    
     generate_favicon()
     generate_static()
-    generate_page("Index.md")
+    generate_pages()
 
 generate_all()
